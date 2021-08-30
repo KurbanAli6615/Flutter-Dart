@@ -1,3 +1,4 @@
+import 'package:expense_planner/Widgets/chart.dart';
 import 'package:expense_planner/Widgets/new_Transection.dart';
 import 'package:expense_planner/Widgets/transection_list.dart';
 import 'package:flutter/material.dart';
@@ -43,27 +44,24 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transection> _userTransections = [
-    Transection(
-      id: 't1',
-      title: 'New Shoes',
-      amount: 69.99,
-      date: DateTime.now(),
-    ),
-    Transection(
-      id: 't2',
-      title: 'Weekly Groceries',
-      amount: 16.54,
-      date: DateTime.now(),
-    ),
-  ];
+  final List<Transection> _userTransections = [];
 
-  void _addNewTransection(String title, double amount) {
+  List<Transection>? get _recentTransactions {
+    return _userTransections.where((tx) {
+      return tx.date!.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7),
+        ),
+      );
+    }).toList();
+  }
+
+  void _addNewTransection(String title, double amount, DateTime chosenDate) {
     final newTx = Transection(
       id: DateTime.now().toString(),
       title: title,
       amount: amount,
-      date: DateTime.now(),
+      date: chosenDate,
     );
 
     setState(() {
@@ -78,6 +76,12 @@ class _MyHomePageState extends State<MyHomePage> {
         return NewTransection(addTx: _addNewTransection);
       },
     );
+  }
+
+  void _deleteTransection(String id) {
+    setState(() {
+      _userTransections.removeWhere((tx) => tx.id == id);
+    });
   }
 
   @override
@@ -106,15 +110,10 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Card(
-              child: Container(
-                child: Text("Chart !"),
-                width: double.infinity,
-                color: Colors.blue,
-              ),
-              elevation: 5,
+            Chart(
+              recentTansections: _recentTransactions,
             ),
-            TransectionList(_userTransections),
+            TransectionList(_userTransections, _deleteTransection),
           ],
         ),
       ),
