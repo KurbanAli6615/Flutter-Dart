@@ -2,9 +2,17 @@ import 'package:expense_planner/Widgets/chart.dart';
 import 'package:expense_planner/Widgets/new_Transection.dart';
 import 'package:expense_planner/Widgets/transection_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'Models/transections.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp,
+  //   DeviceOrientation.portraitDown,
+  // ]);
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -86,34 +94,48 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Personal Expenses',
-          style: TextStyle(
-            fontFamily: 'OpenSans',
+    final appBar = AppBar(
+      title: Text(
+        'Personal Expenses',
+        style: TextStyle(
+          fontFamily: 'OpenSans',
+        ),
+      ),
+      actions: [
+        IconButton(
+          onPressed: () {
+            _startAddNewTransection(context);
+          },
+          icon: Icon(
+            Icons.add,
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              _startAddNewTransection(context);
-            },
-            icon: Icon(
-              Icons.add,
-            ),
-          ),
-        ],
-      ),
+      ],
+    );
+
+    return Scaffold(
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Chart(
-              recentTansections: _recentTransactions,
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.3,
+              child: Chart(
+                recentTansections: _recentTransactions,
+              ),
             ),
-            TransectionList(_userTransections, _deleteTransection),
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      -MediaQuery.of(context).padding.top) *
+                  0.7,
+              child: TransectionList(_userTransections, _deleteTransection),
+            ),
           ],
         ),
       ),
