@@ -98,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final appBar = AppBar(
       title: Text(
-        'Personal Expenses',
+        'Personal Expenses ',
         style: TextStyle(
           fontFamily: 'OpenSans',
         ),
