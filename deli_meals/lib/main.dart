@@ -1,5 +1,7 @@
 import 'package:deli_meals/screens/categories_screen.dart';
 import 'package:deli_meals/screens/category_meals.dart';
+import 'package:deli_meals/screens/meal_detail_screen.dart';
+import 'package:deli_meals/screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -24,11 +26,20 @@ class MyApp extends StatelessWidget {
                 color: Color.fromRGBO(20, 51, 51, 1),
               ),
             ),
+        appBarTheme: Theme.of(context).appBarTheme.copyWith(
+              color: Colors.pink,
+            ),
       ),
       initialRoute: '/',
       routes: {
-        '/': (ctx) => CategoriesScreen(),
+        '/': (ctx) => TabsScreen(),
         CategoryMealsScreen.routeName: (ctx) => CategoryMealsScreen(),
+        MealDetailScreen.routeName: (ctx) => MealDetailScreen(),
+      },
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(
+          builder: (ctx) => CategoriesScreen(),
+        );
       },
     );
   }
