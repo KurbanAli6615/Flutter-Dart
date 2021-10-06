@@ -35,6 +35,9 @@ class _TabsScreenState extends State<TabsScreen> {
       appBar: AppBar(
         title: Text(_pages[_selectedPage]["title"]),
       ),
+      drawer: Drawer(
+        child: Text("Drawer"),
+      ),
       body: _pages[_selectedPage]["page"],
       bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: Colors.white,
